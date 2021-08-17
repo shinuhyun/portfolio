@@ -15,16 +15,20 @@ document.addEventListener('scroll', () => {
 const navbarMenu = document.querySelector('.navbar__menu');
 navbarMenu.addEventListener('click', (event) => {
     const target = event.target;
-    console.log(target)
-    target.style.border = '1px solid var(--color-white);';
-
     const link = target.dataset.link;
     if(link == null) {
         return;
     }
-    
+    navbarMenu.classList.remove('open');
     scrollIntoView(link);
 })
+
+// Navbar toggle button for small screen
+const navbarToggleBtn = document.querySelector('.navbar__toggle-btn');
+navbarToggleBtn.addEventListener('click', () => {
+    navbarMenu.classList.toggle('open');
+})
+
 
 // Handle click on "contact me" button on home
 const homeContactBtn = document.querySelector('.home__contact');
