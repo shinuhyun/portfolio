@@ -114,7 +114,12 @@ function selectNavItem(selected) {
 
 function scrollIntoView(selector) {
   const scrollTo = document.querySelector(selector);
-  scrollTo.scrollIntoView({ behavior: 'smooth' });
+  const navbar = document.querySelector('#navbar');
+  const navbarHeight = navbar.getBoundingClientRect().height;
+  // section.section, section.section__container { margin-top: 20px; }
+  const sectionMargin = 20; // px
+  const top = scrollTo.getBoundingClientRect().top + window.pageYOffset - navbarHeight - sectionMargin;
+  window.scrollTo({ top, behavior: 'smooth' });
   selectNavItem(navItems[sectionIds.indexOf(selector)]);
 }
 
@@ -165,4 +170,25 @@ function getIdx() {
 
 window.addEventListener('load', () => {
   selectNavItem(navItems[selectedNavIndex]);
+
+  // GSAP 동적 로드 및 애니메이션 적용
+  function animateHomeTitle() {
+    gsap.from('.home__title span', {
+      scale: 0.7,
+      opacity: 0,
+      y: -30,
+      duration: 0.9,
+      stagger: 0.07,
+      ease: 'back.out(1.7)'
+    });
+  }
+
+  if (typeof gsap === 'undefined') {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+    script.onload = animateHomeTitle;
+    document.head.appendChild(script);
+  } else {
+    animateHomeTitle();
+  }
 });
